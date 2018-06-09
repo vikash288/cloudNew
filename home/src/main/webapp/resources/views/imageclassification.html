@@ -1,0 +1,149 @@
+        
+<div class="page-bar">
+                             <ul class="page-breadcrumb">
+                                <li>
+                                    <a href="index.html">Home</a>
+                                    <i class="fa fa-circle"></i>
+                                </li>
+                                <li>
+                                    <a ui-sref="mydrive({ 'S3CredentialId':S3CredentialId})">Image Classification</a>
+                                </li>
+                            </ul>
+ 
+ </div>
+                        <!-- END PAGE BAR -->
+                        <!-- BEGIN PAGE TITLE-->
+                        
+                      <!--  <h1 class="page-title" style='color:#c14067'>
+                        	<i class="fa fa-bitbucket" style='color:#c14067'></i> My Buckets / {{bucketname}}
+                          	 <small>  Contain all Folder & Object </small>  
+                        </h1> -->
+                        <!-- END PAGE TITLE-->
+                        <!-- END PAGE HEADER-->
+
+                        <div class="row"   ng-controller="ImageclassificationController">
+                        	     
+                        <div class="col-md-12"    >
+                       	     <div class="row">
+		         		 			<div class="col-md-12" >
+		         						<h1 class="page-title" style='color:#c14067'>
+		                        		   <i class="icon-users" style='color:#c14067'></i>Image Classification
+		                        		</h1>
+		                  			</div>
+ 	       					 </div>	
+ 	        			</div>
+ 	        				<div class="portlet light"  >  
+						 		<div class="portlet-body "   > 
+									  
+             <!-- bootstrap-imageupload. -->
+<div class="col-md-6" >
+
+ 
+       <div class="form-group"  >
+             <multi-select-tree data-input-model="selectBucket" multi-select="false"
+              data-default-label="Select Bucket For Dump Image"
+             data-callback="CustomCallbackBucket(item, selectedItems)"
+             data-select-only-leafs="true" 
+             ></multi-select-tree>
+             
+           
+           </div>
+ 
+                  
+                  
+            <div class="imageupload panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title pull-left">Upload Image</h3>
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default active">File</button>
+                        <button type="button" class="btn btn-default">URL</button>
+                    </div>
+                </div>
+                <div class="file-tab panel-body">
+                    <label class="btn btn-default btn-file">
+                        <span>Browse</span>
+                        <!-- The file is stored here. -->
+                        <input type="file" name="image-file">
+                    </label>
+                    <button type="button" id="remove" class="btn btn-default">Remove</button>
+                </div>
+                <div class="url-tab panel-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control hasclear" placeholder="Image URL">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default">Submit</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-default">Remove</button>
+                    <!-- The URL is stored here. -->
+                    <input type="hidden" name="image-url" id="image-url">
+                </div>
+            </div>
+           <center><button type="button"  id="predict" class="btn btn-danger">Upload & Classify</button></center> 
+            
+        <!--     <button type="button" id="imageupload-disable" class="btn btn-danger">Disable</button>
+            <button type="button" id="imageupload-enable" class="btn btn-success">Enable</button>
+            <button type="button" id="imageupload-reset" class="btn btn-primary">Reset</button> -->
+</div>
+<div class="col-md-6" >
+		
+		
+		
+		<div class="row" id="output_predict">
+		
+	    </div>	
+		<!-- <div class="row"> -->
+		
+		
+		<!-- <div class="row">
+		<div class="col-md-6" style="text-align:right;"><h4>Basic Usage</h4></div> <div class="col-md-6" >  <input class="range_1" id="range_1" type="text" /> </div>
+	 	</div> -->
+	 	<!-- <div class="row">
+	 	<div class="col-md-6" style="text-align:right;"><h4>Basic Usage</h4></div> <div class="col-md-6" >  <input class="range_1" id="range_1" type="text" /> </div>
+		</div>
+		<div class="row">
+		<div class="col-md-6" style="text-align:right;"><h4>Basic Usage</h4></div> <div class="col-md-6" >  <input class="range_1" id="range_1" type="text" /> </div>
+		</div>
+		<div class="row">
+		<div class="col-md-6" style="text-align:right;"><h4>Basic Usage</h4></div> <div class="col-md-6" >  <input class="range_1" id="range_1" type="text" /> </div>
+		  </div> -->
+		  
+<!-- 		<div data-v-b806c04c="" class="column output-column"><div data-v-b806c04c="" class="output"><div data-v-b806c04c="" class="output-class predicted"><div data-v-b806c04c="" class="output-label">Newfoundland</div> <div data-v-b806c04c="" class="output-bar" style="width: 77px; background: rgba(27, 188, 155, 0.77) none repeat scroll 0% 0%;"></div> <div data-v-b806c04c="" class="output-value">77%</div></div><div data-v-b806c04c="" class="output-class"><div data-v-b806c04c="" class="output-label">standard poodle</div> <div data-v-b806c04c="" class="output-bar" style="width: 5px; background: rgba(27, 188, 155, 0.05) none repeat scroll 0% 0%;"></div> <div data-v-b806c04c="" class="output-value">5%</div></div><div data-v-b806c04c="" class="output-class"><div data-v-b806c04c="" class="output-label">flat-coated retriever</div> <div data-v-b806c04c="" class="output-bar" style="width: 4px; background: rgba(27, 188, 155, 0.04) none repeat scroll 0% 0%;"></div> <div data-v-b806c04c="" class="output-value">4%</div></div><div data-v-b806c04c="" class="output-class"><div data-v-b806c04c="" class="output-label">Irish water_spaniel</div> <div data-v-b806c04c="" class="output-bar" style="width: 4px; background: rgba(27, 188, 155, 0.04) none repeat scroll 0% 0%;"></div> <div data-v-b806c04c="" class="output-value">4%</div></div><div data-v-b806c04c="" class="output-class"><div data-v-b806c04c="" class="output-label">miniature poodle</div> <div data-v-b806c04c="" class="output-bar" style="width: 4px; background: rgba(27, 188, 155, 0.04) none repeat scroll 0% 0%;"></div> <div data-v-b806c04c="" class="output-value">4%</div></div></div></div>
+ -->		
+ <!-- </div> -->
+ 
+   <!-- bootstrap-imageupload method buttons. -->
+      
+ 
+      
+  						 		</div>
+						 		
+
+		
+		
+		
+	<!-- 	<div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"> </div>
+                                    <div>
+                                        <span class="btn default btn-file">
+                                            <span class="fileinput-new"> Select image </span>
+                                            <span class="fileinput-exists"> Change </span>
+                                            <input type="file" name="..."> </span>
+                                        <a href="#" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                    </div>
+                                </div> -->
+                                
+                                
+                                				 		
+						 	</div>
+                        
+						
+	                         
+                        </div>
+                     
+                          
+                  
+ 
+
+     
+ 

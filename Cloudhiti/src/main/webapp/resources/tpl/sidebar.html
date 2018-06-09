@@ -1,0 +1,190 @@
+
+<div class="page-sidebar navbar-collapse collapse">
+	<!-- BEGIN SIDEBAR MENU -->
+	<!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+	<!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+	<!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+	<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+	<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+	<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+	<ul class="page-sidebar-menu" data-keep-expanded="false"
+		data-auto-scroll="true" data-slide-speed="200"
+		ng-class="{'page-sidebar-menu-closed': settings.layout.pageSidebarClosed}">
+		<!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+		<li class="sidebar-search-wrapper">
+			<!-- BEGIN RESPONSIVE QUICK SEARCH FORM --> <!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box -->
+			<!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
+
+			<!-- END RESPONSIVE QUICK SEARCH FORM -->
+		</li>
+		<!-- <li class="start nav-item">
+            <a ui-sref="dashboard">
+                <i class="icon-home"></i>
+                <span class="title">Dashboard</span>
+            </a>
+        </li> -->
+		<li class="heading">
+			<h3 class="uppercase"></h3>
+		</li>
+		<!--  <li class="nav-link">
+                                        <a ui-sref="s3credential( { Account: 'Syranew'})" ui-sref="s3credential( { Account: 'Syra' })">
+                                            <i class="icon-folder"></i> Configure New</span>
+                                        </a>
+ 
+                                    </li> -->
+
+
+
+		<li class="nav-item " id="AWSAccount">
+			<!-- ng-click="getawsacount($event)" --> <a href="javascript:;"
+			class="nav-link nav-toggle" context-menu="menuawsaccount"
+			ng-click="getawsacount($event)"> <i class="icon-users"></i> <span
+				class="title">AWS Account</span> <span class="arrow"></span>
+		</a>
+			<ul class="sub-menu">
+				<li class="nav-item"><a href="javascript:;"
+					class="nav-link nav-toggle"> <i class="icon-envelope-open"></i>
+						S3 <span class="arrow"></span>
+				</a>
+
+					<ul class="sub-menu">
+						<li ng-repeat="buildjson in buildjson_AWSCredentials_data"
+							context-menu="!buildjson.mainaccountStatus?menuawsaccountS3Credentials:null">
+							<a ui-sref="s3( {AWSCredentialId: {{buildjson.id}}  })"> <i
+								class="icon-refresh"></i> {{buildjson.awscredentialsName}} </span>
+						</a>
+						</li>
+
+					</ul></li>
+			</ul>
+		</li>
+
+		<li href="javascript:;" class="nav-item"><a
+			class="nav-link nav-toggle"> <i class="icon-social-dribbble"></i>
+				<span class="title">Service</span> <span class="arrow"></span>
+		</a>
+			<ul class="sub-menu">
+				<li><a href="#mlreport"> <i class="icon-refresh"></i>
+						Redshift Service </span>
+				</a></li>
+
+				<li><a href="#dynamicreport"> <i class="icon-refresh"></i>
+						Mysql Service </span>
+				</a></li>
+
+				<li><a href="#kafkaservice"> <i class="icon-refresh"></i>
+						Kafka Service </span>
+				</a></li>
+
+			</ul></li>
+
+		<li class="nav-item" id="ServerCredentials"><a
+			href="javascript:;" class="nav-link nav-toggle"
+			context-menu="menuserver" ng-click="getserverCredentials($event)">
+				<i class="icon-briefcase"></i> <span class="title">Source</span> <span
+				class="arrow"></span>
+		</a>
+			<ul class="sub-menu">
+				<li ng-repeat="buildjson in buildjson_ServerCredentials_data"
+					context-menu="menuserverCredentials"><a
+					ui-sref="mydrive( {ServerCredentialId: {{buildjson.id}}  })">
+						<i class="icon-refresh"></i> {{buildjson.serverName}} </span>
+				</a></li>
+			</ul></li>
+		<li class="nav-item" id="AllJobs"><a href="javascript:;"
+			class="nav-link nav-toggle" context-menu="menujob"
+			ng-click="getjobs($event)"> <i class="icon-docs"></i> <span
+				class="title">Job</span> <span class="arrow"></span>
+		</a>
+			<ul class="sub-menu">
+				<li ng-repeat="buildjson in buildjson_Job_data"><a
+					context-menu="menujobOndemand"> <i class="icon-refresh"></i>
+						{{buildjson.jobName }}</span>
+				</a></li>
+
+			</ul></li>
+
+		<!--   <li class="nav-item">
+ 			<a href="javascript:;" class="nav-link nav-toggle">
+                <i class="icon-bar-chart"></i>
+                <span class="redshift">Redshift</span>
+                <span class="arrow"></span>
+            </a>
+        </li>  active -->
+		<li class="nav-item  " id="AllWorkFlows"><a href="javascript:;"
+			class="nav-link nav-toggle" context-menu="menuWorkflow"
+			ng-click="getworkflows($event)"> <i class="icon-layers"></i> <span
+				class="title">PipeLine</span> <span class="arrow"></span>
+		</a>
+			<ul class="sub-menu">
+				<li ng-repeat="buildjson in buildjson_WorkFlow_data"><a
+					href="javascript:;"> <i class="icon-refresh"></i>
+						{{buildjson.workflowName}}</span>
+				</a></li>
+
+			</ul></li>
+		<li class="nav-item " id="AllSchedules"><a
+			context-menu="menuSchedule" ng-click="getschedules($event)"
+			href="javascript:;" class="nav-link nav-toggle"> <i
+				class="icon-bulb"></i> <span class="title">Schedule </span> <span
+				class="arrow"></span>
+		</a>
+
+			<ul class="sub-menu">
+				<li ng-repeat="buildjson in buildjson_Schedule_data"><a
+					href="javascript:;"> <i class="icon-refresh"></i>
+						{{buildjson.scheduleName}}</span>
+				</a></li>
+
+			</ul></li>
+		<li class="nav-item" id="AllWorkFlows"><a
+			href="#operationaldashboard" class="nav-link nav-toggle"> <i
+				class="icon-settings"></i> <span class="title">Operation
+					Management</span> <span class="arrow"></span>
+		</a></li>
+		<!-- <li class="nav-item">
+ 			<a href="#schedule" class="nav-link nav-toggle">
+                <i class="icon-bar-chart"></i>
+                <span class="title">Sc</span>
+                <span class="arrow"></span>
+            </a>
+        </li> -->
+		<li class="nav-item"><a href="#imageclassification"
+			class="nav-link nav-toggle"> <i class="icon-settings"></i> <span
+				class="title">Image Classification</span> <span class="arrow"></span>
+		</a></li>
+		<li class="nav-item"><a href="#test"
+			class="nav-link nav-toggle"> <i class="icon-settings"></i> <span
+				class="title">Test</span> <span class="arrow"></span>
+		</a></li>
+		
+		<li href="javascript:;" class="nav-item"><a
+			class="nav-link nav-toggle"> <i class="icon-bar-chart"></i> <span
+				class="title">Report</span> <span class="arrow"></span>
+		</a>
+			<ul class="sub-menu">
+				<!-- <li><a href="#mlreport"> <i class="icon-refresh"></i> ML
+						Report </span>
+				</a></li>
+
+				<li><a href="#dynamicreport"> <i class="icon-refresh"></i>
+						Dyanmic Report </span>
+				</a></li>
+				 -->
+				<li><a href="#operational"> <i class="icon-refresh"></i>
+						 Operation Dashboard </span>
+				</a></li>
+				
+				<li><a href="#marketingdashboard"> <i class="icon-refresh"></i>
+						 Marketing  Dashboard </span>
+				</a></li>
+				
+				<li><a href="#twitterdashboard"> <i class="icon-refresh"></i>
+						 Social Media Dashboard </span>
+				</a></li>
+ 				
+			</ul></li>
+
+	</ul>
+	<!-- END SIDEBAR MENU -->
+</div>

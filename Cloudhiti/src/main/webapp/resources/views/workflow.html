@@ -1,0 +1,555 @@
+
+ 
+<script id="code">
+
+
+
+function init() {
+    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+    var $F = go.GraphObject.make;  // for conciseness in defining templates
+ 
+    myDiagram =
+      $F(go.Diagram, "myDiagramDiv",
+        {
+          allowCopy: false,
+          initialContentAlignment: go.Spot.Left,
+          layout:
+            $F(go.LayeredDigraphLayout,
+              {
+                setsPortSpots: false,  // Links already know their fromSpot and toSpot
+                columnSpacing: 5,
+                isInitial: true,
+                isOngoing: true
+              }),
+          validCycle: go.Diagram.CycleNotDirected,
+          "undoManager.isEnabled": true
+        });
+
+    // when the document is modified, add a "*" to the title and enable the "Save" button
+    myDiagram.addDiagramListener("Modified", function(e) {
+    	//console.log(e);
+      var button = document.getElementById("SaveButton");
+      if (button) button.disabled = !myDiagram.isModified;
+      var idx = document.title.indexOf("*");
+      if (myDiagram.isModified) {
+        if (idx < 0) document.title += "*";
+      } else {
+        if (idx >= 0) document.title = document.title.substr(0, idx);
+      }
+    });
+
+    var graygrad = $F(go.Brush, "Linear",
+                     { 1: "white", 0: "whitesmoke",0: "whitesmoke",0: "lightgray" });
+
+    myDiagram.nodeTemplate =  // the default node template
+      $F(go.Node, "Spot",
+        { selectionAdorned: false, textEditable: false, locationObjectName: "BODY" },
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        // the main body consists of a Rectangle surrounding the text
+        $F(go.Panel, "Auto",
+          { name: "BODY" },
+          $F(go.Shape, "Rectangle",
+            { fill: graygrad, stroke:"#c14067", strokeWidth: 2 ,minSize: new go.Size(150, 40) },
+            new go.Binding("fill", "isSelected", function(s) { return s ? graygrad : graygrad; }).ofObject()),
+          $F(go.TextBlock,
+            { stroke: "#c14067", font: "14px 'Open Sans',sans-serif", editable: false,
+              margin: new go.Margin(3, 3+11, 3, 3+4), alignment: go.Spot.Left },
+            new go.Binding("text").makeTwoWay())
+        ),
+        // output port
+        $F(go.Panel, "Auto",
+          { alignment: go.Spot.Right, portId: "from", fromLinkable: true, cursor: "pointer", click: addNodeAndLink },
+          $F(go.Shape, "Rectangle",
+            { width: 15, height: 15, fill: "white", stroke: "dodgerblue", strokeWidth: 1 }),
+          $F(go.Shape, "PlusLine",
+            { width: 8, height: 8, fill: null, stroke: "dodgerblue", strokeWidth: 2 })
+        ),
+        // input port
+        $F(go.Panel, "Auto",
+          { alignment: go.Spot.Left, portId: "to", toLinkable: true },
+          $F(go.Shape, "Circle",
+            { width: 8, height: 8, fill: "white", stroke: "gray" }),
+          $F(go.Shape, "Circle",
+            { width: 4, height: 4, fill: "dodgerblue", stroke: null })
+        )
+      );
+
+    myDiagram.nodeTemplate.contextMenu =
+      $F(go.Adornment, "Vertical",
+        $F("ContextMenuButton",
+          $F(go.TextBlock, "Rename"),
+          { click: function(e, obj) { e.diagram.commandHandler.editTextBlock(); } },
+          new go.Binding("visible", "", function(o) { return o.diagram && o.diagram.commandHandler.canEditTextBlock(); }).ofObject()),
+        // add one for Editing...
+        $F("ContextMenuButton",
+          $F(go.TextBlock, "Delete"),
+          { click: function(e, obj) { e.diagram.commandHandler.deleteSelection(); } },
+          new go.Binding("visible", "", function(o) { return o.diagram && o.diagram.commandHandler.canDeleteSelection(); }).ofObject())
+      );
+
+    myDiagram.nodeTemplateMap.add("Loading",
+      $F(go.Node, "Spot",
+        { selectionAdorned: false, textEditable: false, locationObjectName: "BODY" },
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        // the main body consists of a Rectangle surrounding the text
+        $F(go.Panel, "Auto",
+          { name: "BODY" },
+          $F(go.Shape, "Circle",
+            { fill: graygrad, stroke: "#c14067", strokeWidth: 2 ,minSize: new go.Size(110, 30) },
+            new go.Binding("fill", "isSelected", function(s) { return s ? graygrad : graygrad; }).ofObject()),
+          $F(go.TextBlock,
+            { stroke: "#c14067",  font: "12px 'Open Sans',sans-serif",  editable: false,
+              margin: new go.Margin(3, 3+11,3, 3+4), alignment: go.Spot.Left },
+            new go.Binding("text", "text"))
+        ),
+        // output port
+        $F(go.Panel, "Auto",
+          { alignment: go.Spot.Right, portId: "from", fromLinkable: true, cursor: "pointer" ,click: addNodeAndLink },
+          $F(go.Shape, "Rectangle",
+            { width: 15, height: 15, fill: "white", stroke: "dodgerblue", strokeWidth: 1 }),
+          $F(go.Shape, "PlusLine",
+            { width: 8, height: 8, fill: null, stroke: "dodgerblue", strokeWidth: 2 })
+        )
+      ));
+
+    
+          
+    myDiagram.nodeTemplateMap.add("End",
+      $F(go.Node, "Spot",
+        { selectionAdorned: false, textEditable: false, locationObjectName: "BODY" },
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        // the main body consists of a Rectangle surrounding the text
+        $F(go.Panel, "Auto",
+          { name: "BODY" },
+          $F(go.Shape, "Circle",
+            { fill: graygrad, stroke: "#c14067",strokeWidth: 2 , minSize: new go.Size(110, 30) },
+            new go.Binding("fill", "isSelected", function(s) { return s ? graygrad : graygrad; }).ofObject()),
+          $F(go.TextBlock,
+            { stroke: "#c14067", font: "12px 'Open Sans',sans-serif", editable: true,
+              margin: new go.Margin(3, 3+11,3, 3+4), alignment: go.Spot.Left },
+            new go.Binding("text", "text"))
+        ),
+        // input port
+        $F(go.Panel, "Auto",
+          { alignment: go.Spot.Left, portId: "to", cursor: "pointer"  ,toLinkable: true },
+          $F(go.Shape, "Circle",
+            { width: 8, height: 8, fill: "white", stroke: "gray" }),
+          $F(go.Shape, "Circle",
+            { width: 4, height: 4, fill: "dodgerblue", stroke: null })
+        )
+      ));
+
+  
+    // dropping a node on this special node will cause the selection to be deleted;
+    // linking or relinking to this special node will cause the link to be deleted
+    /* myDiagram.nodeTemplateMap.add("Recycle",
+      $F(go.Node, "Auto",
+        { portId: "to", toLinkable: true, deletable: false,
+          layerName: "Background", locationSpot: go.Spot.Center },
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        { dragComputation: function(node, pt, gridpt) { return pt; } },
+        { mouseDrop: function(e, obj) { myDiagram.commandHandler.deleteSelection(); } },
+        $F(go.Shape,
+          { fill: "lightgray", stroke: "gray" }),
+        $F(go.TextBlock, "Drop Here\nTo Delete",
+          { margin: 5, textAlign: "center" })
+      )); */
+
+    // this is a click event handler that adds a node and a link to the diagram,
+    // connecting with the node on which the click occurred
+    function addNodeAndLink(e, obj) {
+    	  
+    	var data=angular.element(document.getElementById('WorkflowController')).scope().Job_data;
+    	 //var appElement = document.querySelector('[ng-controller=WorkflowController]'); 
+    	// console.log(returnValue  );
+    	//var numbersString = returnValue;
+		//var data = numbersString.split(',');
+
+		var s = $("<select  class=\"form-control\" id=\"selectId\" name=\"selectName\" />");
+		$.each(data, function (index, valueobj) {
+			//console.log(valueobj);
+			$("<option />", {value: valueobj.id, text: valueobj.jobName}).appendTo(s);
+		});
+		
+       	 swal({
+ 		 title: 'Select Job from dropdown',
+  		 html: s,
+  		 animation: true,
+  		 showCloseButton: true,
+  		 showCancelButton: true,
+  		 confirmButtonText:
+  		    '<i class="fa fa-thumbs-up"></i> Ok',
+  		 cancelButtonText:
+  		    '<i class="fa fa-thumbs-down"></i>No'
+         }) 
+         .then(function () {
+        	 
+        	 var JobSelect = $('select#selectId option:selected').val();  
+        	 var JobText = $("select#selectId option:selected").text();
+        	  //console.log(JobSelect);
+        	 var fromNode = obj.part;
+             var diagram = fromNode.diagram;
+             diagram.startTransaction("Add State");
+             // get the node data for which the user clicked the button
+             var fromData = fromNode.data;
+             // create a new "State" data object, positioned off to the right of the fromNode
+             var p = fromNode.location.copy();
+             p.x += diagram.toolManager.draggingTool.gridSnapCellSize.width;
+             var toData = {
+               text: JobText,
+               jobId:  JobSelect,  
+               loc: go.Point.stringify(p)
+             };
+             // add the new node data to the model
+             var model = diagram.model;
+             model.addNodeData(toData);
+             // create a link data from the old node data to the new node data
+             var linkdata = {
+               from: model.getKeyForNodeData(fromData),
+               to: model.getKeyForNodeData(toData)
+             };
+             //console.log(model.gf);
+             // and add the link data to the model
+             model.addLinkData(linkdata);
+             // select the new Node
+             var newnode = diagram.findNodeForData(toData);
+             diagram.select(newnode);
+             // snap the new node to a valid location
+             newnode.location = diagram.toolManager.draggingTool.computeMove(newnode, p);
+             // then account for any overlap
+              shiftNodesToEmptySpaces();
+             diagram.commitTransaction("Add State");
+             
+  			}, function (dismiss) {
+  				
+  			})
+    
+     
+      
+    }
+
+    // Highlight ports when they are targets for linking or relinking.
+    var OldTarget = null;  // remember the last highlit port
+    function highlight(port) {
+      if (OldTarget !== port) {
+        lowlight();  // remove highlight from any old port
+        OldTarget = port;
+        port.scale = 1.3;  // highlight by enlarging
+      }
+    }
+    function lowlight() {  // remove any highlight
+      if (OldTarget) {
+        OldTarget.scale = 1.0;
+        OldTarget = null;
+      }
+    }
+
+    // Connecting a link with the Recycle node removes the link
+    myDiagram.addDiagramListener("LinkDrawn", function(e) {
+    	
+      var link = e.subject;
+      //myDiagram.remove(link); console.log(link);
+      if (link.toNode.category === "Recycle") myDiagram.remove(link);
+      lowlight();
+    });
+    myDiagram.addDiagramListener("LinkRelinked", function(e) {
+    	console.log(e);
+    	var link = e.subject;
+      if (link.toNode.category === "Recycle") myDiagram.remove(link);
+      lowlight();
+    });
+
+    myDiagram.linkTemplate =
+      $F(go.Link,
+        { selectionAdorned: false, fromPortId: "from", toPortId: "to", relinkableTo: true },
+       
+        $F(go.Shape,
+          { stroke: "#c14067", strokeWidth: 2 },
+          { mouseEnter: function(e, obj) { obj.strokeWidth = 5; obj.stroke = "dodgerblue"; },
+            mouseLeave: function(e, obj) { obj.strokeWidth = 2; obj.stroke = "#c14067"; } })
+      );
+
+    function commonLinkingToolInit(tool) {
+    	//console.log(tool);
+    	 // the temporary link drawn during a link drawing operation (LinkingTool) is thick and blue
+      tool.temporaryLink =
+          $F(go.Link, { layerName: "Tool" },
+            $F(go.Shape, { stroke: "dodgerblue", strokeWidth: 5 }));
+
+      // change the standard proposed ports feedback from blue rectangles to transparent circles
+      tool.temporaryFromPort.figure = "Circle";
+      tool.temporaryFromPort.stroke = null;
+      tool.temporaryFromPort.strokeWidth = 0;
+      tool.temporaryToPort.figure = "Circle";
+      tool.temporaryToPort.stroke = null;
+      tool.temporaryToPort.strokeWidth = 0;
+
+      // provide customized visual feedback as ports are targeted or not
+      tool.portTargeted = function(realnode, realport, tempnode, tempport, toend) {
+        if (realport === null) {  // no valid port nearby
+          lowlight();
+        } else if (toend) {
+          highlight(realport);
+        }
+      };
+    }
+
+    var ltool = myDiagram.toolManager.linkingTool;
+    
+    commonLinkingToolInit(ltool);
+    // do not allow links to be drawn starting at the "to" port
+    ltool.direction = go.LinkingTool.ForwardsOnly;
+
+    var rtool = myDiagram.toolManager.relinkingTool;
+    commonLinkingToolInit(rtool);
+    // change the standard relink handle to be a shape that takes the shape of the link
+    rtool.toHandleArchetype =
+      $F(go.Shape,
+        { isPanelMain: true, fill: null, stroke: "dodgerblue", strokeWidth: 5 });
+
+    // use a special DraggingTool to cause the dragging of a Link to start relinking it
+    myDiagram.toolManager.draggingTool = new DragLinkingTool();
+
+    // detect when dropped onto an occupied cell
+    myDiagram.addDiagramListener("SelectionMoved", shiftNodesToEmptySpaces);
+
+    function shiftNodesToEmptySpaces() {
+      myDiagram.selection.each(function(node) {
+        if (!(node instanceof go.Node)) return;
+        // look for Parts overlapping the node
+        while (true) {
+          var exist = myDiagram.findObjectsIn(node.actualBounds,
+                                              // only consider Parts
+                                              function(obj) { return obj.part; },
+                                              // ignore Links and the dropped node itself
+                                              function(part) { return part instanceof go.Node && part !== node; },
+                                              // check for any overlap, not complete containment
+                                              true).first();
+          if (exist === null) break;
+          // try shifting down beyond the existing node to see if there's empty space
+          node.position = new go.Point(node.actualBounds.x, exist.actualBounds.bottom+10);
+        }
+      });
+    }
+
+    // prevent nodes from being dragged to the left of where the layout placed them
+    myDiagram.addDiagramListener("LayoutCompleted", function(e) {
+      myDiagram.nodes.each(function(node) {
+        if (node.category === "Recycle") return;
+        node.minLocation = new go.Point(node.location.x, -Infinity);
+      });
+    });
+
+    load();  // load initial diagram from the mySavedModel textarea
+    layout();
+  }
+
+  function save() {
+	   //document.getElementById("mySavedModel").value = myDiagram.model.toJson();  
+	   jsonObject= myDiagram.model.toJson();
+	   myDiagram.isModified = false;
+	   var workflow= JSON.parse( myDiagram.model.toJson()   ) ;
+       angular.element(document.getElementById('WorkflowController')).scope().JobSelectFunction(workflow);
+       
+      /*  var nodeDataArray=workflow.nodeDataArray;
+       var linkDataArray= linkDataArray.nodeDataArray;
+    	   
+      console.log(workflow.nodeDataArray); */
+   	   
+  }
+  function load() {
+    myDiagram.model = go.Model.fromJson(jsonObject);
+  }
+
+  function layout() {
+    myDiagram.layoutDiagram(true);
+  }
+
+
+  // Define a custom tool that changes a drag operation on a Link to a relinking operation,
+  // but that operates like a normal DraggingTool otherwise.
+  function DragLinkingTool() {
+    go.DraggingTool.call(this);
+    this.isGridSnapEnabled = true;
+    this.isGridSnapRealtime = false;
+    this.gridSnapCellSize = new go.Size(182, 1);
+    this.gridSnapOrigin = new go.Point(5.5, 0);
+  }
+  go.Diagram.inherit(DragLinkingTool, go.DraggingTool);
+
+  // Handle dragging a link specially -- by starting the RelinkingTool on that Link
+  /** @override */
+  DragLinkingTool.prototype.doActivate = function() {
+    var diagram = this.diagram;
+    if (diagram === null) return;
+    this.standardMouseSelect();
+    var main = this.currentPart;  // this is set by the standardMouseSelect
+    if (main instanceof go.Link) { // maybe start relinking instead of dragging
+      var relinkingtool = diagram.toolManager.relinkingTool;
+      // tell the RelinkingTool to work on this Link, not what is under the mouse
+      relinkingtool.originalLink = main;
+      // start the RelinkingTool
+      diagram.currentTool = relinkingtool;
+      // can activate it right now, because it already has the originalLink to reconnect
+      relinkingtool.doActivate();
+      relinkingtool.doMouseMove();
+    } else {
+      go.DraggingTool.prototype.doActivate.call(this);
+    }
+  };
+  // end DragLinkingTool
+
+      /* var jsonObject={ "class": "go.GraphLinksModel",
+  			  "nodeDataArray": [
+  			                  { "key":1, "text":"Start Process", "category":"Loading" },
+  			                  
+  			                  { "key":2, "text":"End Process", "category":"End" }
+  			                ],
+  			                "linkDataArray": [
+  			                  { "from":1, "to":2 },
+   			                ]
+  			              }; */
+  			            var jsonObject = { "class": "go.GraphLinksModel",
+  "nodeDataArray": [ 
+{"key":1, "text":"Start Process", "category":"Loading", "loc":"0 45.67611055595928"},
+{"key":2, "text":"End Process", "category":"End", "loc":"818.6477788880813 9.483000999273244"},
+],
+ 
+  "linkDataArray": [ 
+{"from":1, "to":2},
+ 
+ ]}
+  			              
+  			              
+  init();
+  
+  	
+    //console.log( $F('canvas').getContext() )
+    // end DragLinkingTool
+  </script> 
+<div class="page-bar">
+                             <ul class="page-breadcrumb">
+                                <li>
+                                    <a href="index.html">Home</a>
+                                    <i class="fa fa-circle"></i>
+                                </li>
+                                <li>
+                                    <a ui-sref="mydrive({ 'S3CredentialId':S3CredentialId})">Work Flow</a>
+                                </li>
+                            </ul>
+ 
+                        </div>
+                        <!-- END PAGE BAR -->
+                        <!-- BEGIN PAGE TITLE-->
+                        
+                      <!--  <h1 class="page-title" style='color:#c14067'>
+                        	<i class="fa fa-bitbucket" style='color:#c14067'></i> My Buckets / {{bucketname}}
+                          	 <small>  Contain all Folder & Object </small>  
+                        </h1> -->
+                        <!-- END PAGE TITLE-->
+                        <!-- END PAGE HEADER-->
+
+                        <div class="row" id="WorkflowController" ng-controller="WorkflowController">
+                        	     
+                        <div class="col-md-12"    >
+                        	 <!-- <div class="hidediv" id='overlaydiv' > </div>  -->
+	         					 <!-- <div class="row">
+		         					<div class="col-md-6" >
+		         						<h1 class="page-title" style='color:#c14067'>
+		                        		<i class="fa fa-gg-circle" style='color:#c14067'></i> WORK FLOWS ACTION 
+		                        		</h1>
+		                        	</div>
+		                        	 <div class="col-md-6 toolbox box box-grey box-padding" >
+         
+									        <ul>
+									             
+									         <li ng-repeat="item in models.templates"
+									                dnd-draggable="item"
+									                dnd-effect-allowed="copy"
+									                dnd-copied="item.id = item.id + 1"
+									                >
+									                <button type="button" class="btn btn-default btn-lg" disabled="disabled" style="pointer-events: none;cursor: not-allowed;">{{item.type}}</button>
+									            </li>  
+									        </ul>
+     
+ 		                        	</div> 
+	                        	</div>
+ -->	                            <div class="portlet light"  >  
+						 		<div class="portlet-body form"   > 
+						  		<h3 class="form-section">Work Flow</h3> 
+						  				
+ 							 <div class="row">
+ 							 
+ 							 <div class="col-md-6">
+	                             <div class="form-group"   ng-class="{ 'has-error' : formMain.error }">
+	                                 <label class="control-label">WorkFlow Name</label>
+	                                 <input type="text" name="workflowname"  ng-model="formMain.workflowname" class="form-control" placeholder="WorkFlow Name"   required>
+	                                <!--  <span class="help-block"  ng-show="myform.serverName.$error.required && (myform.serverName.$dirty || submitted)"> Your Server Name is required. </span>   -->
+	                             </div>
+	                         </div>
+	                         
+	                          <div class="col-md-6">
+	                             <div class="form-group" >
+	                                  
+                                 <label class="control-label">Schedule</label>
+                                	 <select class="bs-select form-control" data-show-subtext="true" name="schedule" data-size="5" required>
+                                 		<option data-icon="icon-info" value="">Select Schedule</option>
+                                	 </select>
+                                 
+                                <!-- <button type="button" class="btn  btn-s buttoncolor" onclick="layout()" style="float:left;">
+                                                 <span> Change Layout </span>
+                                            </button>
+                                             -->
+ 				   
+	                             </div>
+	                         </div>
+	                         
+	                         
+	                       <!--   <div class="col-md-2">
+	                             <label class="control-label">Schedule</label>
+	                             <div class="form-group"   ng-class="{ 'has-error' : formMain.error }">
+	                                   		 <button type="submit" class="btn default"   onclick="save()"> <i class="fa fa-check"></i>  Create Workflow</button> 
+	                                  
+	                             </div>
+	                         </div> -->
+	                          
+	                          
+	                        
+	                         </div>
+ 
+<div id="sample">
+  
+  <div id="myDiagramDiv" style="border: solid 2px #c14067; width:100%; position: relative;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    cursor: auto;
+    background-color: rgb(255, 255, 255);
+    z-index: 999;
+    box-shadow: rgba(0, 0, 0, 0.172549) 0px 6px 12px;
+    padding: 10px 5px;height:300px"></div>
+  <!-- <button id="SaveButton" onclick="save()">Save</button>
+  <button onclick="load()">Load</button>
+  <button onclick="layout()">Do Layout</button> -->
+ 
+</div>
+						 	
+			     
+				      	
+						 	
+						 		</div>
+						 		
+						 		
+						 		</div>
+                         </div>	     
+	                        
+						<div class="col-md-12" align="center">  
+		                   <button type="submit" class="btn default "  ng-disabled="myform.$invalid"      onclick="save()"> <i class="fa fa-check"></i>Create Workflow</button>
+                   	 </div>
+	                         
+                        </div>
+                     
+                          
+                  
+ 
+
+     
+ 

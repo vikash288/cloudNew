@@ -1,0 +1,96 @@
+<style>
+.tree-control .tree-view ul .item-details {
+    display: inline-block;
+    margin-left: 10px;
+}
+ 
+</style>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a ui-sref="dashboard">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a ui-sref="servercredentials">Report</a>
+        </li>
+    </ul>
+</div>
+                                    
+<div class="row" ng-controller="MLController">
+	<div class="col-md-12"    >
+		 <div class="row">
+		         		 			<div class="col-md-12" >
+		         						<h1 class="page-title" style='color:#c14067'>
+		                        		   <i class="icon-users" style='color:#c14067'></i> ML Report 
+		                        		</h1>
+		                  			</div>
+ 	   </div>
+ 	   
+ 	   
+ 	   <div class="portlet light">
+ 	     
+		 	 
+             <!-- BEGIN FORM-->
+             	 <div class="portlet-body">
+        	 
+        	     
+                     <div class="row">    
+                       <div class="col-md-6">
+                             <div class="form-group" >
+                                 <label class="control-label">Select ML Job</label>
+                                 <select class="bs-select form-control" data-show-subtext="true"  name="jobml"  data-size="4" required>
+                                 <option data-icon="icon-info" value="Select">Select ML Job</option>
+                                 
+                                  </select>                              
+                             </div>
+                         </div>  
+					 
+              	    </div>
+              	    <div class="row">    
+                       <div class="col-md-12">
+                              <div id="chart_div" style=" height: 500px;"></div>
+                         </div>  
+					 
+              	    </div>
+              	     
+             	
+         	<!-- END FORM-->
+ 		 </div>	
+	  </div>
+ 	
+ 		
+	</div>
+</div> 
+ 
+ 
+    <script type="text/javascript">
+	function drawChart(sets) {
+         
+        var data = new google.visualization.DataTable();
+
+          data.addColumn('number'); // x axis
+         
+           for(var i = 1; i <= sets.length; i++)
+          {
+                data.addColumn('number', 'Cluster ' + i);   // y axises
+          } 
+           
+         sets.forEach(function(set, i) {
+            data.addRows(set);
+         }); 
+ 
+        var series = {};
+        // means
+          //series[2] = { color:'grey' };
+          //series[3] = { color:'black', pointSize:12 };
+ 
+        var options = {
+          title: 'K-means graph',
+           series: series
+        };
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>

@@ -1,0 +1,240 @@
+<style>
+.tree-control .tree-view ul .item-details {
+    display: inline-block;
+    margin-left: 10px;
+}
+ 
+</style>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a ui-sref="dashboard">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a ui-sref="servercredentials">Job</a>
+        </li>
+    </ul>
+</div>
+                                    
+<div class="row" ng-controller="EditJobController">
+ 		
+		<div class="col-md-12"    >
+                       	     <div class="row">
+		         		 			<div class="col-md-12" >
+		         						<h1 class="page-title" style='color:#c14067'>
+		                        		   <i class="icon-users" style='color:#c14067'></i> View Job Info
+		                        		</h1>
+		                  			</div>
+ 	       					 </div>	
+ 	   
+ 	     <div class="portlet light">
+ 	     
+		 	 
+             <!-- BEGIN FORM-->
+             	 <div class="portlet-body">
+        		   <form name="myform" ng-submit="JobSubmit()"  novalidate > 
+        		    
+ 			<div class="row">
+                   	 
+                   	<div class="col-md-6" ng-show="prcocess">
+                              <div class="form-group"  ng-class="{ 'has-error' : myform.jobname.$invalid && (myform.jobname.$dirty || submitted)}">
+                                 <label class="control-label">Job Name</label>
+ 									<input type="text" name="jobname"  ng-model="jobInformation.jobName" class="form-control" placeholder="Job Name"     required readonly> 
+ 									 <span class="help-block"  ng-show="myform.jobname.$error.required && (myform.jobname.$dirty || submitted)"> Your Job Name is required. </span>                
+                              </div>
+                     </div>
+ 					  <div class="col-md-6"  >
+	                             <div class="form-group"   >
+	                                 <label class="control-label">Job Type</label>
+	                                 <br/>
+		                             <div class="  btn-group">
+ 		                               <label class="btn btn-success ng-pristine ng-untouched ng-valid ng-not-empty" 
+		                              ng-model="radioModel.JobTypeChecked"  ng-repeat="JobType in JobTypes"  
+		                              uib-btn-radio="{{JobType.id}}"  uncheckable   disabled>{{JobType.jobTypeName}}</label>
+ 		                         	  </div>
+	                             </div>
+ 	                 </div> 
+	                 
+	                 <!-- <div class="col-md-12" ng-show="prcocess"  ng-class="{ 'has-error' : myform.comments.$invalid && (myform.comments.$dirty || submitted)}">
+                             <div class="form-group">
+                                  <label class="control-label">Job Comments</label>
+                                  <input type="text" name="comments" class="form-control" ng-model="formData.comments"    placeholder="Comments"  required> 
+                                 <span class="help-block"  ng-show="myform.comments.$error.required && (myform.comments.$dirty || submitted)"> Your Comments is required. </span>  
+                                 </div>
+                         </div> -->
+	                  
+ 				</div>
+ 				  
+                 <h3 class="form-section" style=" border-bottom:1px solid #e7ecf1;padding-bottom: 4px;">Job Information</h3>
+                          
+ 
+                         
+                          
+                     <div class="row ">    
+                         <div class="col-md-6">
+                             <div class="form-group" >
+                                 <label class="control-label">Source</label>
+                                 <select class="bs-select form-control" data-show-subtext="true"  name="source" data-size="5" required disabled>
+                                 <option data-icon="icon-info" value="">Select Source</option>
+                                  </select>                              
+                             </div>
+                         </div>
+                         
+                         <div class="col-md-6">
+                              <div class="form-group">
+                                 <label class="control-label">Destination</label>
+                                 <select class="bs-select form-control" data-show-subtext="true" name="destination" data-size="5" required disabled>
+                                 <option data-icon="icon-info" value="">Select Destination</option>
+                                 </select>
+                                 
+                             </div>
+                         </div>
+                     
+                     <div class="col-md-6" ng-show="rdbmsServerType">
+                       <div class="form-group">
+                                        <label class="col-md-6" style="margin-top: 10px; padding-left: 0px;">Create New Table</label>
+                                                    <div class="col-md-6">
+                                                        <div class="mt-radio-inline">
+                                                            <label class="mt-radio">
+                                                                <input type="radio" name="createNewTable"  value="1"  ng-model="jobInformation.destinationrdbmsnewtable"  checked=""     disabled> Yes
+                                                                <span></span>
+                                                            </label>
+                                                            <label class="mt-radio">
+                                                                <input type="radio" name="createNewTable"    value="0"  ng-model="jobInformation.destinationrdbmsnewtable"  checked=""   disabled> No
+                                                                <span></span>
+                                                            </label>
+                                                         </div>
+                                                    </div>
+                                                </div>
+                      </div>                           
+                      <div class="col-md-6" ng-show="rdbmsServerType && !newTableName">
+                       <div class="form-group">
+                                        <label class="col-md-6" style="margin-top: 10px; padding-left: 0px;">OverWrite Table Data</label>
+                                                    <div class="col-md-6">
+                                                        <div class="mt-radio-inline">
+                                                            <label class="mt-radio">
+                                                                <input type="radio" name="overWriteTableData"  ng-model="jobInformation.destinationrdbmsnewtableTruncate"  value="1" checked="" disabled> Yes
+                                                                <span></span>
+                                                            </label>
+                                                            <label class="mt-radio">
+                                                                <input type="radio" name="overWriteTableData" ng-model="jobInformation.destinationrdbmsnewtableTruncate"   value="0" checked="" > No
+                                                                <span></span>
+                                                            </label>
+                                                         </div>
+                                                    </div>
+                                                </div>
+                      </div>   
+                      
+                     
+                                                
+                       <div class="col-md-12" ng-show="newTableName">
+                             <div class="form-group">
+                                  <label class="control-label">New Table Name</label>
+                                  <input type="text" name="newTableName" class="form-control" ng-model="jobInformation.destinationrdbmstableName"    placeholder="New Table Name"  disabled> 
+                             </div>
+                      </div>
+                          
+                     <div class="col-md-6 ">
+                     <div class="form-group" >
+                                 <label class="control-label">Source Result</label>  
+                             		<multiselect-searchtree data-input-model="dataSourceObject" multi-select="false"
+                                            data-output-model="selectedSourceItem" data-callback="CustomCallbackSource(item, selectedItems,dataSourceObject,selectedSourceItem)"
+                     data-select-only-leafs="false" extra-buttons="false" data-load='true'  disabled></multiselect-searchtree>   
+                         </div>
+					</div>
+					
+					<div class="col-md-6">
+                       <div class="form-group {{destinationresult}}"   >
+                                 <label class="control-label">Destination Result</label>
+                              <multiselect-searchtree data-input-model="dataDestinationObject" multi-select="false"
+                                            data-output-model="selectedDestinationItem" data-callback="CustomCallbackDestination(item, selectedItems,dataDestinationObject)"
+                                            data-select-only-leafs="false" extra-buttons="false" data-load='false' disabled></multiselect-searchtree>   
+                    	 </div>
+                    </div>
+                   
+                   
+                   
+                  
+                 <div class="col-md-8"   style="padding: 0px;" ng-class="{ 'has-error' : myform.Algorithm.$invalid && (myform.Algorithm.$dirty || submitted)}">
+                             <div class="col-md-4 form-group" ng-show="MLJobType">
+                                  <label class="control-label">Select Algorithm</label>
+                                     <select class="bs-select form-control" data-show-subtext="true" name="Algorithm" disabled>
+                                  		<option data-icon="icon-info" value="Kmean">Kmean Algorithm</option>
+                                 		<option data-icon="icon-info" value="LR">LR Algorithm</option>
+                                 </select>
+                                 </div>
+                                 <div class="col-md-4  form-group AlgorithmType1" ng-show="MLJobType && AlgorithmType1" >
+                                  <label class="control-label">Select Dependent Variables</label>
+                                    <select class="bs-select form-control" name="VariablesDependent" multiple=""  data-size="5" disabled>
+                                    <option value="NoVariable" >No Variables</option>
+                                       
+                                  </select>
+                                 
+                                 </div>
+                                 <div class="col-md-4  form-group AlgorithmType2" ng-show="MLJobType && AlgorithmType2">
+                                  <label class="control-label">Select Independent Variables</label>
+                                    <select class="bs-select form-control" name="VariablesInDependent" multiple=""  data-size="5" disabled>
+                                    <option value="NoVariable" >No Variables</option>
+                                  </select>
+                                 
+                                 </div>
+                         </div>  
+                         
+                         
+                <!--  <div class="col-md-3"   ng-class="{ 'has-error' : myform.Variables.$invalid && (myform.Variables.$dirty || submitted)}">
+                             <div class="form-group" ng-show="MLJobType">
+                                  <label class="control-label">Select Variables</label>
+                                    <select class="bs-select form-control" name="MLVariables" multiple=""  data-size="5" >
+                                    <option value="NoVariable" >No Variables</option>
+                                  </select>
+                                 
+                                 </div>
+                  </div>   -->
+                  
+                  
+                 
+                       
+                  <div class="col-md-4"    >
+                             <div class="form-group" ng-show="MLJobType && MLJobTypeSource">
+                                  <label class="control-label">Select Bucket For Dump</label>
+                                   <multi-select-tree data-input-model="selectBucket" multi-select="false"
+                                    data-default-label="Select Bucket For Dump"
+                                   data-callback="CustomCallbackBucket(item, selectedItems)"
+                                   data-select-only-leafs="true" 
+                                   ></multi-select-tree>
+                                   
+                                 
+                                 </div>
+                  </div>                 
+                   
+                      
+                     
+                  
+               
+                  <div class="col-md-12" ng-class="{ 'has-error' : myform.comments.$invalid && (myform.comments.$dirty || submitted)}" ng-show="rdbmsServerType && !MLJobType">
+                           <h3 class="form-section" ng-show="rdbmsServerType">Tranformation</h3>
+                             <div class="form-group">
+                                <textarea id="mt-clipboard-paste" name="tranformation"  ng-model="formData.tranformation"  class="form-control" rows="3" style="margin: 0px -2px 0px 0px;" readonly>Paste query here.</textarea>
+                                 <!-- <input type="text" name="comments" class="form-control" ng-model="formData.comments"    placeholder="Comments"  required>  -->
+                                  </div>
+                         
+                  </div>  
+                    <div class="col-md-12" ng-show="prcocess"  ng-class="{ 'has-error' : myform.comments.$invalid && (myform.comments.$dirty || submitted)}">
+                             <div class="form-group">
+                                  <label class="control-label">Job Comments</label>
+                                  <input type="text" name="comments" class="form-control" ng-model="jobInformation.jobName"    placeholder="Comments"  required readonly> 
+                                 <span class="help-block"  ng-show="myform.comments.$error.required && (myform.comments.$dirty || submitted)"> Your Comments is required. </span>  
+                                 </div>
+                         </div>     
+                        
+					<!-- <div class="col-md-12" align="center">  
+		                   <button type="submit" class="btn default "  ng-disabled="myform.$invalid"  ng-show="prcocess"    ng-click="upload()"> <i class="fa fa-check"></i>Test & Create</button>
+                   	 </div> -->
+              	</div>
+             	</form>
+             	
+         	<!-- END FORM-->
+ 		 </div>	
+	  </div>
+ 	 </div>

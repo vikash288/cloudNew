@@ -1,0 +1,289 @@
+<style>
+.table-condensed{
+  font-size: 8px !important;
+}
+
+tbody > tr > td
+{
+     font-size: 8px !important;
+}
+
+thead > tr > th
+{
+     font-size: 8px !important;
+}
+
+</style>
+<div class="page-bar">
+	 <ul class="page-breadcrumb">
+		<li><a href="index.html">Report</a> <i class="fa fa-circle"></i></li>
+		<li><a ng-click="firstgraph()">Marketing Dashboard</a></li>
+	</ul>
+	  <ul  class="page-breadcrumb" style='color: #c14067;background:black;float:right;'>
+	    <li> <img src="./img/FP.png" alt="logo" class="logo-default" height="30" width="150"  /> </li>
+	 </ul>
+	 
+	
+</div>
+<!-- END PAGE BAR -->
+<!-- BEGIN PAGE TITLE-->
+
+<!-- END PAGE TITLE-->
+<!-- END PAGE HEADER-->
+
+<div class="row" ng-controller="MarketingDashboardController">
+
+	<div class="col-md-12">
+		<div class="row">
+			
+		 <div class="col-md-12">
+ 				<h1 class="page-title" style='color: #c14067'>
+					<i class="icon-users" style='color: #c14067'></i> Marketing
+					Dashboard
+ 				</h1>
+				   
+			</div> 
+			 
+		</div>
+	</div>
+
+	<div class="col-md-12">
+	
+	 
+	<div class="row">
+		<div class="col-md-6 col-sm-6">
+			<!-- BEGIN PORTLET-->
+			<div class="portlet light bordered " style="font-size: 8px;">
+				<div class="portlet-title">
+					<div class="caption caption-md">
+						<i class="icon-settings font-green"></i> <span
+							class="caption-subject font-green bold uppercase" style="font-size: 8px;">Customers with single order(Last Month)</span>  
+					</div>
+					 <div class="actions">
+						<div class="form-group">
+ 						   <a href="javascript:;" > Date : {{ Showdate | date:'yyyy-MM-dd'}} PST</a>
+ 						</div> 
+                    </div>
+					 
+				</div>
+				<div class="portlet-body">
+				 	<table class="table  table-condensed table-striped table-bordered table-hover table-checkable order-column"   id="sample1">
+                    <thead >
+                        <tr>
+                            <th>
+                                <label class="mt-checkbox mt-checkbox-outline mt-checkbox-single">
+                                    <input type="checkbox" class="group-checkable"  />
+                                    <span></span>
+                                </label>
+                            </th> 
+                            <th>Order No</th>
+					        <th>Order Date</th>
+					        <th>Firstname</th>
+					        <th>Lastname</th>
+					        <th>Aggregator</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sample1body">
+                        <tr class="odd gradeX" >
+                           <td>
+                                <label class="mt-checkbox mt-checkbox-outline mt-checkbox-single">
+                                    <input type="checkbox" class="checkboxes" value="1" />
+                                    <span></span>
+                                </label>
+                            </td>   
+                             <td > 0</td>
+                             <td > 10 </td>
+                             <td > 1</td>
+                             <td > 1</td>
+                             <td> 0 </td>
+                                
+                          </tr>
+                         
+                         
+                       
+                    </tbody>
+          </table>
+          
+           
+					 <!-- 	<div class="clusterize">
+					  <table class="table table-striped">
+					    <thead>
+					      <tr>
+					        <th>Order No</th>
+					        <th>Order Date</th>
+					        <th>Firstname</th>
+					        <th>Lastname</th>
+					        <th>Aggregator</th>
+					      </tr>
+					    </thead>
+					  </table>
+					  <div id="scrollArea" class="clusterize-scroll emulate-progress">
+					    <table class="table table-striped">
+					      <tbody id="contentArea" class="clusterize-content">
+					        <tr class="clusterize-no-data">
+					          <td>Loading data…</td>
+					        </tr>
+					      </tbody>
+					    </table>
+ 					 </div>
+				</div> -->
+ 				</div>
+			</div>
+			<!-- END PORTLET-->
+		</div>
+		 
+		
+		
+		 
+		
+		<div class="col-md-6 col-sm-6">
+			<!-- BEGIN PORTLET-->
+			<div class="portlet light bordered " style="font-size: 8px;">
+				<div class="portlet-title">
+					<div class="caption caption-md">
+						<i class="icon-settings font-green"></i> <span
+							class="caption-subject font-green bold uppercase" style="font-size: 8px;">Customers with two orders (Time lapse between orders Last Month)</span>  
+					</div>
+					 <div class="actions">
+						<div class="form-group">
+ 						   <a href="javascript:;" > Date : {{ Showdate | date:'yyyy-MM-dd'}} PST</a>
+ 						</div> 
+                    </div>
+				</div>
+				<div class="portlet-body">
+					<table class="table  table-condensed table-striped table-bordered table-hover table-checkable order-column"   id="sample2">
+                    <thead >
+                        <tr>
+                            <th>
+                                <label class="mt-checkbox mt-checkbox-outline mt-checkbox-single">
+                                    <input type="checkbox" class="group-checkable"  />
+                                    <span></span>
+                                </label>
+                            </th> 
+                           <th>1st Order Date</th>
+                            <th>2nd Order Date</th>
+					        
+					        <th>Firstname</th>
+					        <th>Lastname</th>
+					        <th>Sleep Time (Hr)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sample2body">
+                        <tr class="odd gradeX" >
+                           <td>
+                                <label class="mt-checkbox mt-checkbox-outline mt-checkbox-single">
+                                    <input type="checkbox" class="checkboxes" value="1" />
+                                    <span></span>
+                                </label>
+                            </td>   
+                             <td > 0</td>
+                             <td > 10 </td>
+                             <td > 1</td>
+                             <td > 1</td>
+                             <td> 0 </td>
+                                
+                          </tr>
+                         
+                         
+                       
+                    </tbody>
+          </table>
+          <!-- table class="table table-striped table-bordered table-hover table-checkable order-column"   id="sample2">
+                    <thead >
+                        <tr>
+                            <th>
+                                <label class="mt-checkbox mt-checkbox-outline mt-checkbox-single">
+                                    <input type="checkbox" class="group-checkable"  />
+                                    <span></span>
+                                </label>
+                            </th> 
+                            <th>1st Order Date</th>
+                            <th>2nd Order Date</th>
+					        
+					        <th>Firstname</th>
+					        <th>Lastname</th>
+					        <th>Sleep Time (Hr)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sample2body">
+                        <tr class="odd gradeX" >
+                           <td>
+                                <label class="mt-checkbox mt-checkbox-outline mt-checkbox-single">
+                                    <input type="checkbox" class="checkboxes" value="1" />
+                                    <span></span>
+                                </label>
+                            </td>   
+                             <td > 0</td>
+                             <td > 10 </td>
+                             <td > 1</td>
+                             <td > 1</td>
+                             <td> 0 </td>
+                                
+                          </tr>
+                         
+                         
+                       
+                    </tbody>
+          </table> -->
+				 	 
+				</div>
+ 				</div>
+			</div>
+			<!-- END PORTLET-->
+		</div>
+		
+		<div class="col-md-6 col-sm-6">
+			<!-- BEGIN PORTLET-->
+			<div class="portlet light bordered " style="font-size: 8px;">
+				<div class="portlet-title">
+					<div class="caption caption-md">
+						<i class="icon-settings font-green"></i> <span
+							class="caption-subject font-green bold uppercase" style="font-size: 8px;">New Customers Per Channel</span>  
+					</div>
+					 
+				</div>
+				<div class="portlet-body">
+					<div id="firstpie"></div>
+				</div>
+			</div>
+			<!-- END PORTLET-->
+		</div>
+		<div class="col-md-6 col-sm-6">
+			<!-- BEGIN PORTLET-->
+			<div class="portlet light bordered " style="font-size: 8px;">
+				<div class="portlet-title">
+					<div class="caption caption-md">
+						<i class="icon-settings font-green"></i> <span
+							class="caption-subject font-green bold uppercase" style="font-size: 8px;">Total Customer Count Per Channel</span>  
+					</div>
+					 
+				</div>
+				<div class="portlet-body">
+					<div id="firstgraph"></div>
+				</div>
+			</div>
+			<!-- END PORTLET-->
+		</div>
+		<div class="col-md-12 col-sm-12">
+			<!-- BEGIN PORTLET-->
+			<div class="portlet light bordered " style="font-size: 8px;">
+				<div class="portlet-title">
+					<div class="caption caption-md">
+						<i class="icon-bar-chart font-red"></i> <span
+							class="caption-subject font-red bold uppercase" style="font-size: 8px;">Customer Segmentation </span>  
+					</div>
+					 
+				</div>
+				<div class="portlet-body">
+					<div id="secondgraph"></div>
+				</div>
+			</div>
+			<!-- END PORTLET-->
+		</div>
+	</div>
+	
+	</div>
+</div>
+
+
+

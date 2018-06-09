@@ -1,0 +1,428 @@
+<style>
+.tree-control .tree-view ul .item-details {
+    display: inline-block;
+    margin-left: 10px;
+}
+ 
+</style>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a ui-sref="dashboard">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a ui-sref="servercredentials">Report</a>
+        </li>
+    </ul>
+</div>
+                                    
+<div class="row" ng-controller="DynamicreportController">
+	<div class="col-md-12"    >
+		 <div class="row">
+		         		 			<div class="col-md-12" >
+		         						<h1 class="page-title" style='color:#c14067'>
+		                        		   <i class="icon-users" style='color:#c14067'></i> Dynamic Report 
+		                        		</h1>
+		                  			</div>
+ 	   </div>
+ 	   
+ 	   
+ 	   <div class="portlet light">
+ 	     
+		 	 
+             <!-- BEGIN FORM-->
+             	 <div class="portlet-body">
+        	 
+        	     
+                     <div class="row">    
+                         
+                           <div class="col-md-6">
+                             <div class="form-group" >
+                                 <label class="control-label">Select RDBMS Source</label>
+                                 <select class="bs-select form-control" data-show-subtext="true"  name="sourcerdbms" required>
+                                 <option data-icon="icon-info" value="">Select RDBMS Source</option>
+                                 
+                                  </select>                              
+                             </div>
+                         </div> 
+                          <div class="col-md-6" ng-show="sourcetable">
+                             <div class="form-group" >
+                                 <label class="control-label">Select Source Table</label>
+                                 <select class="bs-select form-control" data-show-subtext="true"  name="sourcetable" >
+                                 <option data-icon="icon-info" value="">Select Source Table</option>
+                                 
+                                  </select>                              
+                             </div>
+                         </div> 
+					 
+              	    </div>
+              	    
+ 					
+                   <div class="row" ng-show="sourcetable">    
+                         
+                           <div class="col-md-3" >
+                             <div class="form-group" >
+                                 <label class="control-label">Area Chart</label>
+                                 <label class="mt-radio">
+                                 <input type="radio" name="charttype"  ng-model="formData.charttype"  value="1" checked="" ng-click="setxy(formData.charttype)" >
+                                   <span></span>
+                                 </label>
+                                 <img   style="height: 100%;" class="form-control"   src="https://camo.githubusercontent.com/2c3b9da139cd3f5370783c524f3fa72d583c99e4/687474703a2f2f626c2e6f636b732e6f72672f6d626f73746f636b2f7261772f333838333139352f7468756d626e61696c2e706e67" data-canonical-src="http://bl.ocks.org/mbostock/raw/3883195/thumbnail.png">
+                              	
+                              </div>
+                           </div> 
+                           
+                           <div class="col-md-3">
+                             <div class="form-group" >
+                                 <label class="control-label">Bar Chart</label>
+                                   <label class="mt-radio">
+                                 <input type="radio" name="charttype"  ng-model="formData.charttype"  value="2" checked="" ng-click="setxy(formData.charttype)" >
+                                   <span></span>
+                                 </label>
+                                  <img  style="height: 100%;"class="form-control"  src="https://camo.githubusercontent.com/28dc0f9ab9cef3274910cb4874f5a4d46b37f858/687474703a2f2f626c2e6f636b732e6f72672f6d626f73746f636b2f7261772f333838353330342f7468756d626e61696c2e706e67" data-canonical-src="http://bl.ocks.org/mbostock/raw/3885304/thumbnail.png"> 
+                           </div> 
+                           </div> 
+                           <div class="col-md-3">
+                             <div class="form-group" >
+                                 <label class="control-label">Pie Chart</label>
+                                  <label class="mt-radio">
+                                 <input type="radio" name="charttype"  ng-model="formData.charttype"  value="3" checked="" ng-click="setxy(formData.charttype)" >
+                                   <span></span>
+                                 </label>
+                                  <img style="height: 100%;" class="form-control"  src="https://camo.githubusercontent.com/2d934dd6c9912752b99b8c88c8b527bb2c95a418/687474703a2f2f626c2e6f636b732e6f72672f6d626f73746f636b2f7261772f333838373233352f7468756d626e61696c2e706e67" data-canonical-src="http://bl.ocks.org/mbostock/raw/3887235/thumbnail.png">                             
+                             </div>
+                           </div> 
+                           
+                           <div class="col-md-3">
+                             <div class="form-group" >
+                                 <label class="control-label">Line Chart</label>
+                                  <label class="mt-radio">
+                                 <input type="radio" name="charttype"  ng-model="formData.charttype"  value="4" checked="" ng-click="setxy(formData.charttype)" >
+                                   <span></span>
+                                 </label><img style="height: 100%;" class="form-control"  src="https://camo.githubusercontent.com/368249ba5a7afc422e260c6f2f3294f3b285c55c/687474703a2f2f626c2e6f636b732e6f72672f6d626f73746f636b2f7261772f333838333234352f7468756d626e61696c2e706e67" data-canonical-src="http://bl.ocks.org/mbostock/raw/3883245/thumbnail.png">                                
+                             </div>
+                           </div> 
+                           
+					 
+              	    </div> 
+              	    <div class="col-md-12">
+                             <div class="form-group" >
+                                 <label class="control-label" id="message" style="color:red;"></label>
+                             </div>
+                     </div>
+              	     <div class="row" ng-show="attrvalue">    
+                       
+                           <div class="col-md-4">
+                             <div class="form-group" >
+                                 <label class="control-label">Select X-Asis</label>
+                                 <select class="bs-select form-control" data-show-subtext="true"  data-size="5"   name="xaxis" required>
+                                 <option data-icon="icon-info" value="">Select Attr</option>
+                                 
+                                  </select>                              
+                             </div>
+                         </div> 
+                          <div class="col-md-4" ng-show="sourcetable">
+                             <div class="form-group" >
+                                 <label class="control-label">Select Y-Asis</label>
+                                 <select class="bs-select form-control" multiple=""  data-size="5"   name="yaxis" >
+                                 <option data-icon="icon-info" value="">Select Attr</option>
+                                 
+                                  </select>                              
+                             </div>
+                         </div> 
+					 	 <div class="col-md-2" ng-show="sourcetable">
+                             <div class="form-group" >
+                                 <label class="control-label"> <h1> <button type="button" class="btn  btn-s buttoncolor"   ng-click="drawcharts();"> <span class="glyphicon glyphicon-upload"></span> DRAW CHARTS</button> </h1> </label>
+                                                              
+                             </div>
+                         </div> 
+              	    </div>
+              	    
+              	     <div class="row"  >    
+                       
+                           <div class="col-md-12">
+                              <div   height="500"  id="scatter-load"></div>  
+                              <svg  width="960" height="500"  id="scatter-loadsvg"></svg>
+                         </div> 
+                          
+              	    </div>
+              	    
+             	
+         	<!-- END FORM-->
+ 		 </div>	
+	  </div>
+ 	
+ 		
+	</div>
+</div> 
+ <style>
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis--x path {
+  display: none;
+}
+
+</style>
+<script>
+var piedata = [{
+    "age": "5-13",
+    "population": "4499890",
+       
+}, {
+    "age": "14-17",
+    "population": "2159981",
+       
+}];
+
+var areaChartDate= [{
+    "date": "24-Apr-07",
+    "close": "93.24",   
+}, {
+    "date": "27-Apr-07",
+    "close": "99.47",
+},
+{
+    "date": "1-May-12",
+    "close": "582.13",
+}	
+];
+
+
+var  BarChartsdata = [
+{
+	"Letter": "A",
+	"Freq": 20	
+},
+{
+	"Letter" : "B",
+	"Freq": 12
+}
+];
+
+var da=[{
+    name: 'Asia',
+    data: [502, 635, 809, 947, 1402, 3634, 5268]
+}, {
+    name: 'Africa',
+    data: [106, 107, 111, 133, 221, 767, 1766]
+}];
+
+// call the method below
+ //pie(piedata);
+// areaCharts(da,da);
+ //LineCharts(areaChartDate);
+//BarCharts(BarChartsdata);
+function BarCharts(data) {
+	var svg = d3.select("#scatter-loadsvg"),
+    margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom;
+
+var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+
+var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+var datalength=data.length;
+
+data.forEach(function(d,key) {
+    d.Letter = d.Letter;
+    d.Freq = +d.Freq;
+    
+    if(key== datalength-1 )
+    {
+    	x.domain(data.map(function(d) { return d.Letter; }));
+    	y.domain([0, d3.max(data, function(d) { return d.Freq; })]);
+
+    	g.append("g")
+    	    .attr("class", "axis axis--x")
+    	    .attr("transform", "translate(0," + height + ")")
+    	    .call(d3.axisBottom(x));
+
+    	g.append("g")
+    	    .attr("class", "axis axis--y")
+    	    .call(d3.axisLeft(y).ticks(10, ""))
+    	  .append("text")
+    	    .attr("transform", "rotate(-90)")
+    	    .attr("y", 6)
+    	    .attr("dy", "0.71em")
+    	    .attr("text-anchor", "end")
+    	    .text("Frequency");
+
+    	g.selectAll(".bar")
+    	  .data(data)
+    	  .enter().append("rect")
+    	    .attr("class", "bar")
+    	    .attr("x", function(d) { return x(d.Letter); })
+    	    .attr("y", function(d) { return y(d.Freq); })
+    	    .attr("width", x.bandwidth())
+    	    .attr("height", function(d) { return height - y(d.Freq); });
+    }
+});
+
+
+    
+}
+
+
+function LineCharts(data) {
+	var svg = d3.select("#scatter-loadsvg"),
+    margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom,
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var parseTime = d3.timeParse("%d-%b-%y");
+
+var x = d3.scaleTime()
+    .rangeRound([0, width]);
+
+var y = d3.scaleLinear()
+    .rangeRound([height, 0]);
+
+var line = d3.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.close); });
+    
+var datalength=data.length;
+
+data.forEach(function(d,key) {
+    d.date = parseTime(d.date);
+    d.close = +d.close;
+    
+    if(key== datalength-1 )
+    {
+    	x.domain(d3.extent(data, function(d) { return d.date; }));
+    	  y.domain(d3.extent(data, function(d) { return d.close; }));
+
+    	  g.append("g")
+    	      .attr("transform", "translate(0," + height + ")")
+    	      .call(d3.axisBottom(x))
+    	    .select(".domain")
+    	      .remove();
+
+    	  g.append("g")
+    	      .call(d3.axisLeft(y))
+    	    .append("text")
+    	      .attr("fill", "#000")
+    	      .attr("transform", "rotate(-90)")
+    	      .attr("y", 6)
+    	      .attr("dy", "0.71em")
+    	      .attr("text-anchor", "end")
+    	      .text("Price ($)");
+
+    	  g.append("path")
+    	      .datum(data)
+    	      .attr("fill", "none")
+    	      .attr("stroke", "steelblue")
+    	      .attr("stroke-linejoin", "round")
+    	      .attr("stroke-linecap", "round")
+    	      .attr("stroke-width", 1.5)
+    	      .attr("d", line);
+    }
+});
+
+
+    
+}
+
+function areaCharts(datax,datay) {
+	
+	Highcharts.chart('scatter-load', {
+	    chart: {
+	        type: 'area'
+	    },
+	    title: {
+	        text: 'Area Charts'
+	    },
+	    /* subtitle: {
+	        text: 'Area Charts'
+	    }, */
+	    xAxis: {
+	        categories: datax,
+	        tickmarkPlacement: 'on',
+	        title: {
+	            enabled: false
+	        }
+	    },
+	    yAxis: {
+	        title: {
+	            text: 'y-axis'
+	        },
+	        labels: {
+	            formatter: function () {
+	                return this.value / 1000;
+	            }
+	        }
+	    },
+	    tooltip: {
+	        split: true,
+	        valueSuffix: ' x-axis'
+	    },
+	    credits: {
+	        enabled: false
+	    },
+	    plotOptions: {
+	        area: {
+	            stacking: 'normal',
+	            lineColor: '#666666',
+	            lineWidth: 1,
+	            marker: {
+	                lineWidth: 1,
+	                lineColor: '#666666'
+	            }
+	        }
+	    },
+	    series:  datay
+	});
+	
+ 
+}
+
+
+function pie(data) {
+	
+	var svg = d3.select("#scatter-loadsvg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    radius = Math.min(width, height) / 2,
+    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+var pie = d3.pie()
+    .sort(null)
+    .value(function(d) { return d.population; });
+
+var path = d3.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(0);
+
+var label = d3.arc()
+    .outerRadius(radius - 40)
+    .innerRadius(radius - 40);
+    
+var arc = g.selectAll(".arc")
+.data(pie(data))
+.enter().append("g")
+  .attr("class", "arc");
+
+arc.append("path")
+  .attr("d", path)
+  .attr("fill", function(d) { return color(d.data.age); });
+
+arc.append("text")
+  .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+  .attr("dy", "0.35em")
+  .text(function(d) { return d.data.age; });
+}
+</script>

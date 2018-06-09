@@ -1,0 +1,66 @@
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a ui-sref="dashboard">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a ui-sref="servercredentials">Service</a>
+        </li>
+    </ul>
+</div>
+                                    
+<div class="row" ng-controller="ServerCredentialsController">
+ 
+		<div class="col-md-12">
+		 <div class="row">
+		         		 <div class="col-md-12" >
+		         						<h1 class="page-title" style='color:#c14067'>
+		                        		   <i class="icon-social-dribbble" style='color:#c14067'></i> Kafka Service Info
+		                        		</h1>
+		                  </div>
+ 	        </div>	
+		<div class="portlet light">
+		 
+             <!-- BEGIN FORM-->
+             	 <div class="portlet-body">
+        		  		
+ 						 <div class="row">
+ 						  <form name="myform" ng-submit="KafkaServiceSubmit()"  novalidate >
+	                         <div class="col-md-6">
+	                             <div class="form-group"   ng-class="{ 'has-error' : formMain.error }">
+	                                 <label class="control-label">Kafka Name</label>
+	                                 <input type="text" name="kafkaname"  ng-model="formMain.KafkaName" class="form-control" placeholder="Kafka Name"   required>
+ 	                             </div>
+	                         </div>
+	                         
+	                         <div class="col-md-6">
+	                             <div class="form-group"   ng-class="{ 'has-error' : formMain.error }">
+	                                 <label class="control-label">Kafka Url</label>
+	                                 <input type="text" name="kafkaurl"  ng-model="formMain.KafkaUrl" class="form-control" placeholder="Kafka Url"   required>
+ 	                             </div>
+	                         </div>
+	                         
+	                         
+	                         <div class="form-actions center" align="center">
+                    							<button type="submit" class="btn default"  ng-disabled="myform.$invalid "> <i class="fa fa-check"></i> Start Service</button>
+                  	         </div>  
+                  			 
+                  			 
+                  			 <div class="form-actions center" align="center">
+                    							<button type="submit" class="btn default"  ng-disabled="myform.$invalid "> <i class="fa fa-check"></i> Stop Service</button>
+                  	          </div> 			
+	                      </form> 
+                         </div>  
+                        
+              
+              
+             	 
+         	<!-- END FORM-->
+ 		 </div>	
+ 		 
+	  </div>
+	 </div>
+ 	 </div>
+ 
+             

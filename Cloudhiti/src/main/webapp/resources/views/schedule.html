@@ -1,0 +1,154 @@
+<div class="page-bar">
+                             <ul class="page-breadcrumb">
+                                <li>
+                                    <a href="index.html">Home</a>
+                                    <i class="fa fa-circle"></i>
+                                </li>
+                                <li>
+                                    <a ui-sref="mydrive({ 'S3CredentialId':S3CredentialId})">Schedule</a>
+                                </li>
+                            </ul>
+ 
+ </div>
+                        <!-- END PAGE BAR -->
+                        <!-- BEGIN PAGE TITLE-->
+                        
+                      <!--  <h1 class="page-title" style='color:#c14067'>
+                        	<i class="fa fa-bitbucket" style='color:#c14067'></i> My Buckets / {{bucketname}}
+                          	 <small>  Contain all Folder & Object </small>  
+                        </h1> -->
+                        <!-- END PAGE TITLE-->
+                        <!-- END PAGE HEADER-->
+
+                        <div class="row"   ng-controller="ScheduleController">
+                        	     
+                        <div class="col-md-12"    >
+                       	     <div class="row">
+		         		 			<div class="col-md-12" >
+		         						<h1 class="page-title" style='color:#c14067'>
+		                        		   <i class="icon-users" style='color:#c14067'></i> Schedule
+		                        		</h1>
+		                  			</div>
+ 	       					 </div>	
+ 	        			</div>
+ 	        				<div class="portlet light"  >  
+						 		<div class="portlet-body "   > 
+  									 <form name="myform" ng-submit="scheduleSubmit()"  novalidate > 
+ 									  <!-- <div class="form-group" >
+			                                 <label class="col-md-2 control-label"  >Work Flow</label>
+			                                  		<div class="col-md-10">
+                                                         <select class="bs-select form-control" data-show-subtext="true"  name="source" required>
+                                							 <option data-icon="icon-info" value="">Select Work Flow</option>
+                                  						 </select> 
+                                                    </div>                           
+			                                 </div> -->
+ 									  	<div class="row" >
+ 									  	
+ 									  	<div class="col-md-12"    >
+                                                <div class="form-group"  ng-class="{ 'has-error' : myform.scheduleName.$invalid && (myform.scheduleName.$dirty || submitted)}">
+                                                   <label class="control-label">Schedule Title</label>
+ 												   <input type="text" name="scheduleName" class="form-control" ng-model="formData.scheduleName"   required> 
+                                              
+                                  				</div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div class="row" >
+ 									  	
+ 									  	<div class="col-md-6"    >
+                                                <div class="form-group"  ng-class="{ 'has-error' : myform.scheduledetails.$invalid && (myform.scheduledetails.$dirty || submitted)}">
+                                                   <label class="control-label">Schedule Details</label>
+ 														<div class="mt-radio-inline">
+                                                            <label class="mt-radio">
+                                                                <input type="radio" name="scheduledetails"  ng-model="formData.scheduleDetails"  value="Daily" checked=""  > Daily
+                                                                <span></span>  
+                                                            </label>
+                                                             <label class="mt-radio">
+                                                                <input type="radio" name="scheduledetails" ng-model="formData.scheduleDetails"   value="Weekly" checked="" > Weekly
+                                                                <span></span>
+                                                            </label>
+                                                             <label class="mt-radio">
+                                                                <input type="radio" name="scheduledetails" ng-model="formData.scheduleDetails"   value="Monthly" checked="" > Monthly
+                                                                <span></span>
+                                                            </label>
+                                                         </div>                                              
+                                  				</div>
+                                        </div>
+                                        	<!-- <div class="col-md-6"    >
+                                                <div class="form-group"  ng-class="{ 'has-error' : myform.scheduledetails.$invalid && (myform.scheduledetails.$dirty || submitted)}">
+                                                   <label class="control-label">Minutes</label>
+ 														<div class="mt-radio-inline">
+                                                            <label class="mt-radio">
+                                                                <input type="radio" name="scheduledetails"  ng-model="formData.scheduleDetails"  value="Daily" checked=""  > Daily
+                                                                <span></span>  
+                                                            </label>
+                                                            <label class="mt-radio">
+                                                                <input type="radio" name="scheduledetails" ng-model="formData.scheduleDetails"   value="Weekly" checked="" > Weekly
+                                                                <span></span>
+                                                            </label>
+                                                             <label class="mt-radio">
+                                                                <input type="radio" name="scheduledetails" ng-model="formData.scheduleDetails"   value="Monthly" checked="" > Monthly
+                                                                <span></span>
+                                                            </label>
+                                                         </div>                                              
+                                  				</div>
+                                        </div> -->
+                                        <div class="col-md-6"    >
+                                                <div class="form-group"  ng-class="{ 'has-error' : myform.scheduleTime.$invalid && (myform.scheduleTime.$dirty || submitted)}" >
+                                                   <label class="control-label">Schedule Time</label>
+ 												    <div class="input-group">
+                                                            <input type="text" name="scheduleTime" class="form-control timepicker timepicker-24" ng-model="formData.scheduleTime" readonly required>
+                                                            <span class="input-group-btn">
+                                                                <button class="btn default" type="button">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+ 												    
+                                  				</div>
+                                        </div>
+                                        
+                                        <!-- <div class="col-md-6"    >
+                                                <div class="form-group"  ng-class="{ 'has-error' : myform.scheduleTime.$invalid && (myform.scheduleTime.$dirty || submitted)}" >
+                                                   <label class="control-label">Schedule Time</label>
+ 												    <div class="input-group">
+                                                            <input type="text" name="scheduleTime" class="form-control timepicker timepicker-24" ng-model="formData.scheduleTime" readonly required>
+                                                            <span class="input-group-btn">
+                                                                <button class="btn default" type="button">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+ 												    
+                                  				</div>
+                                        </div> -->
+                                        </div>
+                                        
+                                       <!--  <div class="col-md-6"    >    
+                                                <div class="form-group"  ng-class="{ 'has-error' : myform.port.$invalid && (myform.port.$dirty || submitted)}">
+                                                   <label class="control-label">Work Flow</label>
+ 													<select class="bs-select form-control" data-show-subtext="true"  name="source" required>
+                                							 <option data-icon="icon-info" value="">Select Work Flow</option>
+                                  						 </select>                                                
+                                  				</div>
+                                        </div> -->  
+                                       
+			                             <div class="col-md-12" align="center">  
+		                                     <button type="submit" class="btn default "  ng-disabled="myform.$invalid"       > <i class="fa fa-check"></i>Test & Add Schedule</button>
+                   	                     </div>
+                          			</form>
+  						 		</div>
+						 		
+						 		
+						 	</div>
+                        
+						
+	                         
+                        </div>
+                     
+                          
+                  
+ 
+
+     
+ 

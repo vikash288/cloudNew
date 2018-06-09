@@ -1,0 +1,15 @@
+{
+ "name": "Node-real-time-chats",
+ "version": "0.0.1",
+ "description": "A realtime chat application using Redis, Node.js and Socket.IO",
+ "dependencies": {
+  "body-parser": "^1.17.2",
+  "express": "^4.15.3",
+  "expressjs": "^1.0.1",
+  "socket.io": "^2.0.3"
+ },
+ "main": "realtime.js",
+ "scripts": {
+  "start": "node realtime.js"
+ }
+}

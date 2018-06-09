@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="WebApp">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+
+    <head>
+        <title data-ng-bind="'ClouDhiti | ' + $state.current.data.pageTitle"></title>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+        <link href="./assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="./assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="./assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+ 		<link href="./assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+ 		<link href="./assets/global/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css" /> 
+ 		<link rel="stylesheet" type="text/css" href="./assets/global/plugins/multiselectangularjs/multiselect-searchtree.min.css">
+        <link rel="stylesheet" type="text/css" href="./assets/global/plugins/TreeviewDropdown/angular-multi-select-tree-0.1.0.css">    
+        <link rel="stylesheet" type="text/css" href="./assets/global/plugins/sweetalert2/sweetalert2.css">
+        <link rel="stylesheet" type="text/css" href="./assets/global/plugins/clusterize.css">
+        <!-- END GLOBAL MANDATORY STYLES -->
+        
+        <!-- BEGIN DYMANICLY LOADED CSS FILES(all plugin and page related styles must be loaded between GLOBAL and THEME css files ) -->
+        <link id="ng_load_plugins_before" />
+        
+        <!-- END DYMANICLY LOADED CSS FILES -->
+        <!-- BEGIN THEME STYLES -->
+        
+     
+        <link href="./assets/global/css/components.min.css" id="style_components" rel="stylesheet" type="text/css" />
+        <link href="./assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+        <link href="./assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
+        <link href="./assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="./assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+        
+  		<link rel="stylesheet" type="text/css" href="./assets/global/plugins/multiselectangularjs/multiselect-searchtree.min.css">
+        <link rel="stylesheet" type="text/css" href="./assets/global/plugins/sweetalert2/sweetalert2.css">
+    
+ 
+        
+        <!-- END THEME STYLES -->
+       <link rel="shortcut icon" href="favicon.ico" />  </head>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- DOC: Apply "page-header-fixed-mobile" and "page-footer-fixed-mobile" class to body element to force fixed header or footer in mobile devices -->
+    <!-- DOC: Apply "page-sidebar-closed" class to the body and "page-sidebar-menu-closed" class to the sidebar menu element to hide the sidebar by default -->
+    <!-- DOC: Apply "page-sidebar-hide" class to the body to make the sidebar completely hidden on toggle -->
+    <!-- DOC: Apply "page-sidebar-closed-hide-logo" class to the body element to make the logo hidden on sidebar toggle -->
+    <!-- DOC: Apply "page-sidebar-hide" class to body element to completely hide the sidebar on sidebar toggle -->
+    <!-- DOC: Apply "page-sidebar-fixed" class to have fixed sidebar -->
+    <!-- DOC: Apply "page-footer-fixed" class to the body element to have fixed footer -->
+    <!-- DOC: Apply "page-sidebar-reversed" class to put the sidebar on the right side -->
+    <!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
+
+    <body id="drop" ng-controller="AppController" class="page-header-fixed page-sidebar-fixed page-sidebar-closed-hide-logo page-on-load page-sidebar-hide" ng-class="{'page-content-white': settings.layout.pageContentWhite,'page-container-bg-solid': settings.layout.pageBodySolid, 'page-sidebar-closed': settings.layout.pageSidebarClosed}">
+         <div class="hidediv" id='overlaydiv' > </div> <!-- BEGIN PAGE SPINNER -->
+        <div ng-spinner-bar class="page-spinner-bar">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+        <!-- END PAGE SPINNER -->
+        <!-- BEGIN HEADER -->
+        <div data-ng-include="'tpl/header.html'" data-ng-controller="HeaderController" class="page-header navbar navbar-fixed-top"> </div>
+        <!-- END HEADER -->
+        <div class="clearfix"> </div>
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div data-ng-include="'tpl/sidebar.html'" data-ng-controller="SidebarController" class="page-sidebar-wrapper"> </div>
+            <!-- END SIDEBAR -->
+           
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <div class="page-content">
+                    
+                    <!-- BEGIN ACTUAL CONTENT -->
+                    <div ui-view class="fade-in-up"> </div>
+                    <!-- END ACTUAL CONTENT -->
+                </div>
+            </div>
+            <!-- END CONTENT -->
+            <!-- BEGIN QUICK SIDEBAR -->
+            <a href="javascript:;" class="page-quick-sidebar-toggler">
+                <i class="icon-login"></i>
+            </a>  
+            
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div data-ng-include="'tpl/footer.html'" data-ng-controller="FooterController" class="page-footer"> </div>
+        <!-- END FOOTER -->
+       
+        <div class="quick-nav-overlay"></div> 
+      
+       
+        <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+        <!-- BEGIN CORE JQUERY PLUGINS -->
+        <!--[if lt IE 9]>
+	 
+	<![endif]-->
+        <script src="./assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+          
+       <!--  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+         -->      
+ 		
+ 		<script src="./assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+ 
+        <script src="./assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/bootstrap-table/bootstrap-table.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/aws.js"></script>
+        <script src="./assets/global/plugins/sweetalert2/sweetalert2.min.js" type="text/javascript"></script>
+      	<script src="./assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js" type="text/javascript"></script>
+      	<script src="./assets/global/plugins/clusterize.min.js" type="text/javascript"></script>
+      		 
+  	   
+		 
+		<link href="https://google-developers.appspot.com/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+  		<script async type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZEk_KgwjacEwfZmD1ctoWZp-DIurf5gc&libraries=visualization"></script>
+    		 
+   		
+   		<script type="text/javascript" src="http://d3js.org/d3.hexbin.v0.min.js"></script>	
+     	<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    
+     
+        <!-- END CORE JQUERY PLUGINS -->
+        <!-- BEGIN CORE ANGULARJS PLUGINS -->
+        <script src="./assets/global/plugins/angularjs/angular.min.js" type="text/javascript"></script>
+ 
+        <script src="./assets/global/plugins/angularjs/angular-sanitize.min.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/angularjs/angular-touch.min.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/angularjs/plugins/angular-ui-router.min.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/angularjs/plugins/ocLazyLoad.min.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/angularjs/plugins/ui-bootstrap-tpls.min.js" type="text/javascript"></script>
+ 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js">   
+ 	    </script>
+ 	    <script src="/socket.io/socket.io.js"></script>
+ 	     
+        <!-- END CORE ANGULARJS PLUGINS -->
+        <!-- BEGIN APP LEVEL ANGULARJS SCRIPTS -->
+       <!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+        <!-- <script src="/socket.io/socket.io.js"></script> -->
+      <!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script> -->  
+         <script type="text/javascript"  src="./assets/global/plugins/charts/d3.js"></script>
+        <script type="text/javascript"  src="./assets/global/plugins/charts/highchart.js"></script>
+        <script type="text/javascript"  src="./assets/global/plugins/charts/highchartexporting.js"></script>
+        <script type="text/javascript"  src="./assets/global/plugins/charts/highcharts-more.js"></script>
+        <script type="text/javascript"  src="./assets/global/plugins/charts/solid-gauge.js"></script>
+        
+           
+        <script src="./assets/global/plugins/multiselectangularjs/multiselect-searchtree.min.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/multiselectangularjs/multiselect-searchtree.tpl.js" type="text/javascript"></script>
+            
+        <script type="text/javascript" src="./assets/global/plugins/TreeviewDropdown/angular-multi-select-tree-0.1.0.js"></script>
+  	    <script type="text/javascript" src="./assets/global/plugins/TreeviewDropdown/angular-multi-select-tree-0.1.0.tpl.js"></script>
+ 
+ 		<script src="./js/fontservice.js" type="text/javascript"></script>
+        
+        <script src="./js/main.js" type="text/javascript"></script>
+        <script src="./js/directives.js" type="text/javascript"></script>
+        
+        <script src="bower_components/angular-messages/angular-messages.js" type="text/javascript"></script>
+        <script src="bower_components/spring-security-csrf-token-interceptor/dist/spring-security-csrf-token-interceptor.min.js" type="text/javascript"></script>
+       
+        <script src="bower_components/lodash/dist/lodash.js" type="text/javascript"></script>
+       
+		 
+         <!-- END APP LEVEL ANGULARJS SCRIPTS -->
+        <!-- BEGIN APP LEVEL JQUERY SCRIPTS -->
+		<script src="./assets/global/scripts/app.js" type="text/javascript"></script>
+		<script src="./assets/layouts/layout/scripts/layout.js" type="text/javascript"></script>
+		<script src="./assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+		<script src="./assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+
+ 	  	<script src="./assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>  
+        <!-- END APP LEVEL JQUERY SCRIPTS -->
+        <!-- END JAVASCRIPTS -->
+    </body>
+    <!-- END BODY -->
+</html>

@@ -1,0 +1,180 @@
+<style>
+  .d3-tip {
+        font-family: Verdana;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 8px;
+        color: #fff; 
+        z-index: 5070;
+      }
+</style> 
+<div class="page-bar">
+	  <ul class="page-breadcrumb">
+		<li><a href="index.html">Report</a> <i class="fa fa-circle"></i></li>
+		<li><a ng-click="firstgraph()">Twitter Dashboard</a></li>
+	</ul>
+	<!-- <ul  class="page-breadcrumb" style='color: #c14067;background:black;float:right;'>
+	    <li> <img src="./img/FP.png" alt="logo" class="logo-default" height="30" width="150"  /> </li>
+	 </ul> -->
+	  
+</div>
+<!-- END PAGE BAR -->
+<!-- BEGIN PAGE TITLE-->
+
+<!-- END PAGE TITLE-->
+<!-- END PAGE HEADER-->
+
+<div class="row" ng-controller="TwitterDashboardController">
+
+	<div class="col-md-12">
+		<div class="row">
+			
+	    <div class="col-md-12">
+ 				<h1 class="page-title" style='color: #c14067'>
+					<i class="icon-users" style='color: #c14067'></i> Social Media
+					Analytics - Twitter
+ 				</h1>
+				   
+			</div> 
+			 
+		</div>
+	</div>
+
+	<div class="col-md-12">
+	 
+	
+	 
+	<div class="row">
+		 <div class="col-md-12 col-sm-12">
+			<!-- BEGIN PORTLET-->
+			<div class="portlet light bordered " style="font-size: 8px;">
+				<div class="portlet-title">
+					<div class="caption caption-md">
+						<i class="icon-settings font-green"></i> <span
+							class="caption-subject font-green bold uppercase" style="font-size: 8px;">Twitter Heat Map </span><span
+							class="caption-subject font-green" style="font-size: 8px;">(Keywords : BigData,ML)</span>  
+					</div>
+					 
+				</div>
+				<div class="portlet-body"  style="width: 100%;height: 100%;">
+					<div id="map_canvas" style="position: abso;height: 200px;"></div>
+				</div>
+			</div>
+			<!-- END PORTLET-->
+    </div> 
+      <!-- <div class="col-md-5 col-sm-5">
+			BEGIN PORTLET
+			<div class="portlet light bordered ">
+				<div class="portlet-title">
+					<div class="caption caption-md">
+						<i class="icon-settings font-green"></i> <span
+							class="caption-subject font-green bold uppercase">Average Sentiment</span>  
+					</div>
+					 
+				</div>
+				<div class="portlet-body">
+					<div id="totaltwits"></div>
+					<span >Average Sentiment is {{AverageSentiment}}</span>
+				</div>
+			</div>
+			 
+		</div>   -->
+		  <div class="col-md-6 col-sm-6">
+			 
+			<div class="portlet light bordered " style="font-size: 8px;">
+				<div class="portlet-title">
+					<div class="caption caption-md">
+						<i class="icon-settings font-green"></i> <span
+							class="caption-subject font-green bold uppercase" style="font-size: 8px;">Hover over a hexagon to read the associated Tweet. </span>  
+					</div>
+					 
+				</div>
+				<div class="portlet-body">
+					<div id="heatploy"></div>
+				</div>
+			</div>
+			 
+		</div> 
+		
+		<!--  -->
+		<div class="col-md-6 col-sm-6">
+			<!-- BEGIN PORTLET-->
+			<div class="portlet light bordered "  style="font-size: 8px;">
+				<div class="portlet-title">
+					<div class="caption caption-md">
+						<i class="icon-settings font-green"></i> <span
+							class="caption-subject font-green bold uppercase"  style="font-size: 8px;">Positive , Negative Twitter Graph </span>  
+					</div>
+					 
+				</div>
+				<div class="portlet-body">
+					<div id="NegPostwits"></div>
+				</div>
+			</div>
+			<!-- END PORTLET-->
+		</div>
+		
+		
+		<div class="col-md-6 col-sm-6">
+ 			<div class="portlet light bordered ">
+				<div class="portlet-title">
+					<div class="caption caption-md">
+						<i class="icon-bar-chart font-red"></i> <span
+							class="caption-subject font-red bold uppercase" style="font-size: 8px;">Real Time Tweets</span>  
+					</div>
+					 
+				</div>
+				<div class="portlet-body">
+					 	<div class="clusterize">
+					  <table class="table table-striped">
+					    <thead>
+					      <tr>
+					        <!-- <th> User Id </th> -->
+					        <!--  <th> Name </th> -->
+		                            <th> Tweets </th>
+		                         <!--    <th> Time </th> -->
+ 		                             <th> Score </th>
+					      </tr>
+					    </thead>
+					  </table>
+					  <div id="scrollArea2" class="clusterize-scroll emulate-progress">
+					    <table class="table table-striped">
+					      <tbody id="contentArea2" class="clusterize-content">
+					        <tr class="clusterize-no-data">
+					          <td>Loading data…</td>
+					        </tr>
+					      </tbody>
+					    </table>
+ 					 </div>
+				</div>
+				
+				
+		                     
+         			 
+				</div>
+			</div>
+			 
+		</div>
+		  
+	 	<div class="col-md-6 col-sm-6">
+ 			<div class="portlet light bordered ">
+				<div class="portlet-title">
+					<div class="caption caption-md">
+						<i class="icon-bar-chart font-red"></i> <span
+							class="caption-subject font-red bold uppercase" style="font-size: 8px;">Analytics Historical Twitter</span>  
+					</div>
+					 
+				</div>
+				<div class="portlet-body">
+          			 <div id="historicaltweets"></div>
+				</div>
+			</div>
+			 
+		</div>
+		 
+	</div>
+	
+	</div>
+</div>
+
+
+

@@ -1,0 +1,27 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+  	<servlet-name>PastFloodRecords</servlet-name>
+  	<display-name>PastFloodRecords</display-name>
+  	<description></description>
+  	<servlet-class>org.cloudhiti.report.PastFloodRecords</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>PastFloodReportFilter</servlet-name>
+  	<display-name>PastFloodReportFilter</display-name>
+  	<description></description>
+  	<servlet-class>org.cloudhiti.report.PastFloodReportFilter</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>PastFloodRecords</servlet-name>
+  	<url-pattern>/PastFloodRecords</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>PastFloodReportFilter</servlet-name>
+  	<url-pattern>/PastFloodReportFilter</url-pattern>
+  </servlet-mapping>
+</web-app>
